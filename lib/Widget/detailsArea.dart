@@ -98,91 +98,92 @@ class DetailsArea extends StatelessWidget {
       builder: (context, model, chld) {
         return model.getclickedDetailID == -1
             ? Center(child: Text("selecteer aan de linker kant een item"))
-            : Padding(
-                padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                // color: Theme.of(context).primaryColor,
-                child: FutureBuilder<List<Map<String, Object>>>(
-                  future: DataProvider.db.getDetails(model.getclickedDetailID),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      print("detailArea - start future");
-                      final item = snapshot.data[0];
+            :
+            // Padding(
+            // padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+            // color: Theme.of(context).primaryColor,
+            // child:
+            FutureBuilder<List<Map<String, Object>>>(
+                future: DataProvider.db.getDetails(model.getclickedDetailID),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    print("detailArea - start future");
+                    final item = snapshot.data[0];
 
-                      _detailCards[0].setDataList(
-                        [
-                          item['HoofdkantoorNaam'].toString(),
-                          item['displayName'].toString(),
-                          item['plaats'].toString(),
-                          item['telefoon'].toString(),
-                          item['kassanum'].toString(),
-                          item['typebetaal1'].toString(),
-                          item['tmsNR'].toString(),
-                        ],
-                      );
-
-                      _detailCards[1].setDataList(
-                        [
-                          item['adres'].toString(),
-                          item['postcode'].toString(),
-                          item['plaats'].toString(),
-                          item['telefoon'].toString(),
-                        ],
-                      );
-
-                      _detailCards[2].setDataList(
-                        [
-                          item['nuaadres'].toString(),
-                          item['MASK'].toString(),
-                          item['GW'].toString(),
-                          item['datacommadre'].toString(),
-                          item['MAC'].toString(),
-                        ],
-                      );
-                      _detailCards[3].setDataList(
-                        [
-                          item['betaalauto'].toString(),
-                          item['TID'].toString(),
-                          item['TIDAWL'].toString(),
-                          item['MerchantID'].toString(),
-                        ],
-                      );
-                      _detailCards[4].setDataList(
-                        [
-                          item['PUKGSM'].toString(),
-                          item['CertCode'].toString(),
-                          item['datuminstall'].toString(),
-                          item['Installatie'].toString(),
-                          item['InstallatieDatum'].toString(),
-                          item['Euro_Install_Num'].toString(),
-                          item['Euro_Opmerkingen'].toString(),
-                          item['pinpadserie'].toString(),
-                          item['Portnumber'].toString(),
-                          item['verkooppuntc'].toString(),
-                        ],
-                      );
-
-                      return Container(
-                          decoration: BoxDecoration(
-                              color: Theme.of(context).cardColor,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8))),
-                          // ),
-                          child: Column(children: [
-                            Expanded(
-                                child: ListView(children: [
-                              getDetailTile(0),
-                              getDetailTile(1),
-                              getDetailTile(2),
-                              getDetailTile(3),
-                              getDetailTile(4),
-                            ]))
-                          ]));
-                    }
-                    return Center(
-                      child: CircularProgressIndicator(),
+                    _detailCards[0].setDataList(
+                      [
+                        item['HoofdkantoorNaam'].toString(),
+                        item['displayName'].toString(),
+                        item['plaats'].toString(),
+                        item['telefoon'].toString(),
+                        item['kassanum'].toString(),
+                        item['typebetaal1'].toString(),
+                        item['tmsNR'].toString(),
+                      ],
                     );
-                  },
-                ),
+
+                    _detailCards[1].setDataList(
+                      [
+                        item['adres'].toString(),
+                        item['postcode'].toString(),
+                        item['plaats'].toString(),
+                        item['telefoon'].toString(),
+                      ],
+                    );
+
+                    _detailCards[2].setDataList(
+                      [
+                        item['nuaadres'].toString(),
+                        item['MASK'].toString(),
+                        item['GW'].toString(),
+                        item['datacommadre'].toString(),
+                        item['MAC'].toString(),
+                      ],
+                    );
+                    _detailCards[3].setDataList(
+                      [
+                        item['betaalauto'].toString(),
+                        item['TID'].toString(),
+                        item['TIDAWL'].toString(),
+                        item['MerchantID'].toString(),
+                      ],
+                    );
+                    _detailCards[4].setDataList(
+                      [
+                        item['PUKGSM'].toString(),
+                        item['CertCode'].toString(),
+                        item['datuminstall'].toString(),
+                        item['Installatie'].toString(),
+                        item['InstallatieDatum'].toString(),
+                        item['Euro_Install_Num'].toString(),
+                        item['Euro_Opmerkingen'].toString(),
+                        item['pinpadserie'].toString(),
+                        item['Portnumber'].toString(),
+                        item['verkooppuntc'].toString(),
+                      ],
+                    );
+
+                    return Container(
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).cardColor,
+                            borderRadius: BorderRadius.all(Radius.circular(8))),
+                        // ),
+                        child: Column(children: [
+                          Expanded(
+                              child: ListView(children: [
+                            getDetailTile(0),
+                            getDetailTile(1),
+                            getDetailTile(2),
+                            getDetailTile(3),
+                            getDetailTile(4),
+                          ]))
+                        ]));
+                  }
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
+                // ),
               );
       },
     );

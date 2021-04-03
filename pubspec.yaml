@@ -32,6 +32,9 @@ dependencies:
   file_picker: ^2.1.6
   geolocator: ^6.2.1
   geocoding: ^1.0.5
+  shared_preferences: ^2.0.3
+  intl: ^0.15.7
+  provider: ^5.0.0
 
 dev_dependencies:
   flutter_test:
