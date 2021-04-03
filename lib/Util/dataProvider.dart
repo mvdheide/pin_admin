@@ -34,9 +34,9 @@ class DataProvider {
 
   Future<Database> get database async {
     if (_database != null) return _database;
-    print("get database - start");
+    // print("get database - start");
     _database = await initDB();
-    print("get database - done");
+    // print("get database - done");
     return _database;
   }
 
@@ -57,9 +57,9 @@ class DataProvider {
   //   // }
   // }
   Future<String> getDBPath() async {
-    print("start databasesPath");
+    // print("start databasesPath");
     var databasesPath = await getDatabasesPath();
-    print("opendb: getDatabasesPath: $databasesPath");
+    // print("opendb: getDatabasesPath: $databasesPath");
     return join(databasesPath, "mabTD.db");
   }
 
@@ -70,15 +70,15 @@ class DataProvider {
     String path;
     if (kIsWeb) {
       path = '/database/mabTD.db';
-      print("initDB() - web, dus path = $path");
+      // print("initDB() - web, dus path = $path");
       // var databaseFactory = databaseFactoryWeb;
       return await databaseFactory.openDatabase(inMemoryDatabasePath);
     } else {
       path = await getDBPath();
-      print("initDB() - start van open: $path");
+      // print("initDB() - start van open: $path");
 // Check if the database exists
       var exists = await databaseExists(path);
-      print("openDB: start van open: $exists");
+      // print("openDB: start van open: $exists");
       if (!exists) {
         // Should happen only the first time you launch your application
         print("initDB() - Creating new copy from asset");
@@ -117,9 +117,9 @@ class DataProvider {
       int buttonNRParam,
       bool ascendingParam) async {
     final db = await database;
-    var ope = db.isOpen;
-    print("filterShopParam :$filterShopParam");
-    print("DataProvider.getList: dbis $ope");
+    // var ope = db.isOpen;
+    // print("filterShopParam :$filterShopParam");
+    // print("DataProvider.getList: dbis $ope");
     return await db.query("BEANET1",
         columns: [
           "_id",
@@ -140,19 +140,19 @@ class DataProvider {
             (ascendingParam ? "ASC" : "DESC"));
   }
 
-  Future<List<Map<String, dynamic>>> getDetails(int _idParam) async {
+  Future<List<Map<String, Object>>> getDetails(int _idParam) async {
     final db = await database;
-    var ope = db.isOpen;
-    print("_idParam :$_idParam");
-    print("DataProvider.getList: dbis $ope");
+    // var ope = db.isOpen;
+    // print("_idParam :$_idParam");
+    // print("DataProvider.getList: dbis $ope");
     return await db.query("BEANET1", where: "_id = ? ", whereArgs: [_idParam]);
   }
 
   Future<List<List>> getDetailsList(int _idParam) async {
     final db = await database;
-    var ope = db.isOpen;
-    print("_idParam :$_idParam");
-    print("DataProvider.getList: dbis $ope");
+    // var ope = db.isOpen;
+    // print("_idParam :$_idParam");
+    // print("DataProvider.getList: dbis $ope");
     var result = await db.query("BEANET1",
         // columns: [
         //   "_id",
