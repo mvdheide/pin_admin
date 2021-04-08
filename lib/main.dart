@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pin_admin/Pages/phoneMainPage.dart';
 import 'package:pin_admin/Pages/tabletMainPage.dart';
 import 'package:pin_admin/Util/settingsProvider.dart';
-import 'package:pin_admin/Widget/backgroundWidget.dart';
+import 'package:pin_admin/Widget/backgroundWidget.dart'; //rename to ScaffoldTemplate
 import 'package:provider/provider.dart';
 
 import 'package:pin_admin/Pages/settingsPage.dart';
