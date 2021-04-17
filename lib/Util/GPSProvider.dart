@@ -2,6 +2,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 
 class GPSProvider {
+//----------------------------------------------------------------------------//
+
   static Future<List<Placemark>> getLocation() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -25,12 +27,11 @@ class GPSProvider {
             'Location permissions are denied (actual value: $permission).');
       }
     }
-    // // return await Geolocator.getCurrentPosition();
-    // Position pos = await Geolocator.getCurrentPosition();
-    // final coordinates = new Coordinates(pos.latitude, pos.longitude);
-    // return await Geocoder.local.findAddressesFromCoordinates(coordinates);
     Position position = await Geolocator.getCurrentPosition();
     return await placemarkFromCoordinates(
         position.latitude, position.longitude); //, "nl_NL");
   }
+
+//----------------------------------------------------------------------------//
+
 }

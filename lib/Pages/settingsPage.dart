@@ -5,11 +5,16 @@ import 'package:pin_admin/Util/dataProvider.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:pin_admin/Util/settingsProvider.dart';
-import 'package:pin_admin/Widget/backgroundWidget.dart';
+import 'package:pin_admin/Widget/scaffoldTemplate.dart';
 
 class SettingsPage extends StatefulWidget {
+//----------------------------------------------------------------------------//
+
   @override
   _SettingsPageState createState() => _SettingsPageState();
+
+//----------------------------------------------------------------------------//
+
 }
 
 class _SettingsPageState extends State<SettingsPage> {
@@ -17,9 +22,11 @@ class _SettingsPageState extends State<SettingsPage> {
   final DateFormat dateFormatter = DateFormat('HH:mm  EEEE dd MMMM yyyy');
   final double rowHeigth = 40.0;
 
-  String _dropdownValue;
+  String? _dropdownValue;
 
-  double _currentSliderValue;
+  double? _currentSliderValue;
+
+//----------------------------------------------------------------------------//
 
   @override
   void initState() {
@@ -27,11 +34,11 @@ class _SettingsPageState extends State<SettingsPage> {
     initializeDateFormatting();
   }
 
-  // SharedPrefProvider.prefProvider.getUseGPS().then((useGPS) {switchValue = useGPS}})
+//----------------------------------------------------------------------------//
 
   @override
   Widget build(BuildContext context) {
-    return BackgroundWidget(
+    return ScaffoldTemplate(
       title: 'PinAdmin settings',
       childWidget: Column(
         children: [
@@ -45,6 +52,8 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
     );
   }
+
+//----------------------------------------------------------------------------//
 
   Widget _settingRowTemplete(String descriptionText, Widget valueWidget) {
     return Container(
@@ -79,6 +88,8 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
+//----------------------------------------------------------------------------//
+
   Widget _getUpdateRow() {
     Widget valueWidget = Row(
       children: [
@@ -88,7 +99,7 @@ class _SettingsPageState extends State<SettingsPage> {
             future: SettingsProvider.settings.getUpdateDate(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return Text(snapshot.data);
+                return Text(snapshot.data!);
               }
               return Text("");
             },
@@ -108,15 +119,17 @@ class _SettingsPageState extends State<SettingsPage> {
     return _settingRowTemplete("Database voor het laast geupdate", valueWidget);
   }
 
+//----------------------------------------------------------------------------//
+
   Widget _getDeviceDisplayRow() {
-    int savedSelectedOption;
+    int? savedSelectedOption;
     Widget valueWidget = FutureBuilder<int>(
       future: SettingsProvider.settings.getDeviceModusOptions(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           savedSelectedOption = snapshot.data;
           _dropdownValue =
-              SettingsProvider.deviceTypeOptions[savedSelectedOption];
+              SettingsProvider.deviceModusOptions[savedSelectedOption!];
           DropdownButton deviceModusDropDownButton = DropdownButton<String>(
             value: _dropdownValue,
             icon: const Icon(Icons.arrow_drop_down),
@@ -125,23 +138,25 @@ class _SettingsPageState extends State<SettingsPage> {
             underline: Container(
               height: 2,
             ),
-            onChanged: (String newValue) {
-              // onChanged: (String? newValue) {
+            onChanged: (String? newValue) {
               SettingsProvider.settings.setDeviceModus(
-                  SettingsProvider.deviceTypeOptions.indexOf(newValue));
-
-              print(SettingsProvider.deviceTypeOptions.indexOf(newValue));
-              setState(() {
-                _dropdownValue = newValue;
-              });
-            },
-            items: SettingsProvider.deviceTypeOptions
-                .map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
+                  SettingsProvider.deviceModusOptions.indexOf(newValue));
+              print(SettingsProvider.deviceModusOptions.indexOf(newValue));
+              setState(
+                () {
+                  _dropdownValue = newValue;
+                },
               );
-            }).toList(),
+            },
+            items: SettingsProvider.deviceModusOptions
+                .map<DropdownMenuItem<String>>(
+              (String? value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value!),
+                );
+              },
+            ).toList(),
           );
 
           return Column(
@@ -170,6 +185,8 @@ class _SettingsPageState extends State<SettingsPage> {
     return valueWidget;
   }
 
+//----------------------------------------------------------------------------//
+
   Widget _getManualWidthRow() {
     Widget valueWidget;
     if (_currentSliderValue == null) {
@@ -192,13 +209,15 @@ class _SettingsPageState extends State<SettingsPage> {
         valueWidget);
   }
 
+//----------------------------------------------------------------------------//
+
   Slider getManualSlider() {
     return Slider(
       min: 0,
       max: 1000,
       divisions: 50,
-      value: _currentSliderValue,
-      label: _currentSliderValue.round().toString(),
+      value: _currentSliderValue!,
+      label: _currentSliderValue!.round().toString(),
       onChangeEnd: (double value) {
         SettingsProvider.settings.setManualDeviceWidth(value);
         print("end slider: $value");
@@ -213,10 +232,12 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
+//----------------------------------------------------------------------------//
+
   Future<void> startFilePicking(BuildContext context) async {
-    FilePickerResult result = await FilePicker.platform.pickFiles();
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
     if (result != null) {
-      File file = File(result.files.single.path);
+      File file = File(result.files.single.path!);
       print("bytes: ${result.files.single.size}");
       print("file.lastModifiedSync(): ${file.lastModifiedSync()}");
       var path = await DataProvider.db.getDBPath();
@@ -231,6 +252,8 @@ class _SettingsPageState extends State<SettingsPage> {
       print("cancel");
     }
   }
+
+//----------------------------------------------------------------------------//
 
   void _showDialog(BuildContext context) {
     showDialog(
@@ -251,6 +274,8 @@ class _SettingsPageState extends State<SettingsPage> {
       },
     );
   }
+
+//----------------------------------------------------------------------------//
 
   // Widget _getUseGPSRow() {
   //   return Container(

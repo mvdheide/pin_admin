@@ -5,14 +5,14 @@ import 'package:pin_admin/Widget/overviewListArea.dart';
 import 'package:pin_admin/models/textFieldModel.dart';
 
 class PhoneMainPage extends StatelessWidget {
+//----------------------------------------------------------------------------//
+
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Expanded(
           child: Container(
-            // width: 3 * MediaQuery.of(context).size.width / 5,
-            //alignment: Alignment.topLeft,
             child: Column(
               children: [
                 // child: Padding(
@@ -24,7 +24,10 @@ class PhoneMainPage extends StatelessWidget {
                 FilterTextArea(
                     textfieldNr: TextFieldModel.SHOP_TEXTFIELD,
                     useGPSIcon: false),
-                FilterTextArea(textfieldNr: TextFieldModel.TMS_TEXTFIELD),
+                FilterTextArea(
+                  textfieldNr: TextFieldModel.TMS_TEXTFIELD,
+                  useNumericKeys: true,
+                ),
                 // Divider(),
                 HeaderButtonRow(
                     backGroundColor: Theme.of(context).primaryColor),
@@ -33,9 +36,10 @@ class PhoneMainPage extends StatelessWidget {
             ),
           ),
         ),
-        // Divider(),
-        // VerticalDivider(),
       ],
     );
   }
+
+//----------------------------------------------------------------------------//
+
 }

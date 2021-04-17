@@ -12,32 +12,39 @@ class TextFieldModel extends ChangeNotifier {
     TextEditingController(),
     TextEditingController(),
   ];
-  // final shopController = TextEditingController();
-  // final placeController = TextEditingController();
-  // final tmsController = TextEditingController();
+
+//----------------------------------------------------------------------------//
 
   TextEditingController getController(int textfieldNr) =>
       textFieldController[textfieldNr];
-  // TextEditingController get getPlaceController => placeController;
-  // TextEditingController get getTMSController => tmsController;
+
+//----------------------------------------------------------------------------//
 
   String getLabel(int textfieldNr) {
     return textfieldLabels[textfieldNr];
   }
+
+//----------------------------------------------------------------------------//
 
   void clearTextField(int textfieldNr) {
     textFieldController[textfieldNr].clear();
     notifyListeners();
   }
 
+//----------------------------------------------------------------------------//
+
   void fillInText(int textfieldNr, String newValue) {
     textFieldController[textfieldNr].text = newValue;
     notifyListeners();
   }
 
+//----------------------------------------------------------------------------//
+
   void changedText() {
     notifyListeners();
   }
+
+//----------------------------------------------------------------------------//
 
   List<String> getAllTextFieldValues() {
     return textFieldController
@@ -45,9 +52,14 @@ class TextFieldModel extends ChangeNotifier {
         .toList();
   }
 
+//----------------------------------------------------------------------------//
+
   void disposeControllers() {
     textFieldController[0].dispose();
     textFieldController[1].dispose();
     textFieldController[2].dispose();
   }
+
+//----------------------------------------------------------------------------//
+
 }

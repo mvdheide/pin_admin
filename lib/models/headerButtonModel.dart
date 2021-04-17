@@ -9,9 +9,13 @@ class HeaderButtonModel extends ChangeNotifier {
 
   List<String> _buttonTitles = ["Winkel", "Plaats", "TMS#", "s#", "k#"];
 
+//----------------------------------------------------------------------------//
+
   String getHeaderButtonTitle(buttonNR) {
     return _buttonTitles[buttonNR];
   }
+
+//----------------------------------------------------------------------------//
 
   void setHeaderClicked(int _clickedButtonParam) {
     if (_clickedButtonParam == _lastClickedButton) {
@@ -23,9 +27,14 @@ class HeaderButtonModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Icon getIconHeaderButton(int buttonNR) {
+//----------------------------------------------------------------------------//
+
+  Icon? getIconHeaderButton(int buttonNR) {
     return buttonNR == _lastClickedButton
         ? (Icon(_ascending ? Icons.arrow_drop_up : Icons.arrow_drop_down))
         : null;
   }
+
+//----------------------------------------------------------------------------//
+
 }

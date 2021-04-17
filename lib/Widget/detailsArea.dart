@@ -1,286 +1,131 @@
 import 'package:flutter/material.dart';
 
 import 'package:pin_admin/Util/dataProvider.dart';
+import 'package:pin_admin/models/detailModel.dart';
 import 'package:pin_admin/models/overViewModel.dart';
 import 'package:provider/provider.dart';
 
 class DetailsArea extends StatelessWidget {
-  // final Function function;
-  final Color textColor;
-  // final int phoneDetailID;
+  final Color? textColor;
+  final List<bool> defaultExpandCategory = [true, false, true, false, false];
 
   DetailsArea({
-    Key key,
-    @required this.textColor,
-  }) // this.phoneDetailID})
-  : super(key: key);
+    required this.textColor,
+  });
 
-//   @override
-//   DetailsAreaState createState() => DetailsAreaState();
-// }
-
-// class DetailsAreaState extends State<DetailsArea> {
-//   // int _selectedID = -1;
-
-  final List<_DetailCard> _detailCards = [
-    _DetailCard(
-        "Algemene Gegevens",
-        [
-          "Hoofdkantoor:",
-          "naam:",
-          "plaats:",
-          "shop nr:",
-          "kassa nr:",
-          "pinpad soort:",
-          "TMS nr:"
-        ],
-        true),
-    _DetailCard(
-        "Contact Gegevens",
-        [
-          "adres:",
-          "postcode:",
-          "plaats:",
-          "telefoon:",
-        ],
-        false),
-    _DetailCard(
-        "Verbinding Gegevens",
-        [
-          "ip:",
-          "subnetmask:",
-          "gateway:",
-          "netwerk profiel:",
-          "MAC address:",
-        ],
-        false),
-    _DetailCard(
-      "Contract Gegevens",
-      [
-        "TID Equens:",
-        "TID CCV:",
-        "TIDAWL:",
-        "MerchantID:",
-      ],
-      false,
-    ),
-    _DetailCard(
-      "Overige Gegevens",
-      [
-        "PUK GSM:",
-        "CertCode:",
-        "datum install:",
-        "Installatie:",
-        "InstallatieDatum:",
-        "Euro_Install_Num:",
-        "Euro_Opmerkingen:",
-        "pinpadserie:",
-        "Portnumber:",
-        "verkooppuntc:",
-      ],
-      false,
-    ),
-  ];
+//----------------------------------------------------------------------------//
 
   @override
   Widget build(BuildContext context) {
-    // int detailID;
-    // if (phoneDetailID == null) {
-    //   detailID = Provider.of<OverViewModel>(context).getclickedDetailID;
-    // } else {
-    //   // detailID = phoneDetailID;
-    //   detailID = Provider.of<OverViewModel>(context).getclickedDetailID;
-    // }
     print("detailArea - Build start");
-    // return detailID == -1
-
-    return Consumer<OverViewModel>(
-      builder: (context, model, chld) {
-        return model.getclickedDetailID == -1
-            ? Center(child: Text("selecteer aan de linker kant een item"))
-            :
-            // Padding(
-            // padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-            // color: Theme.of(context).primaryColor,
-            // child:
-            FutureBuilder<List<Map<String, Object>>>(
-                future: DataProvider.db.getDetails(model.getclickedDetailID),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    print("detailArea - start future");
-                    final item = snapshot.data[0];
-
-                    _detailCards[0].setDataList(
-                      [
-                        item['HoofdkantoorNaam'].toString(),
-                        item['displayName'].toString(),
-                        item['plaats'].toString(),
-                        item['telefoon'].toString(),
-                        item['kassanum'].toString(),
-                        item['typebetaal1'].toString(),
-                        item['tmsNR'].toString(),
-                      ],
-                    );
-
-                    _detailCards[1].setDataList(
-                      [
-                        item['adres'].toString(),
-                        item['postcode'].toString(),
-                        item['plaats'].toString(),
-                        item['telefoon'].toString(),
-                      ],
-                    );
-
-                    _detailCards[2].setDataList(
-                      [
-                        item['nuaadres'].toString(),
-                        item['MASK'].toString(),
-                        item['GW'].toString(),
-                        item['datacommadre'].toString(),
-                        item['MAC'].toString(),
-                      ],
-                    );
-                    _detailCards[3].setDataList(
-                      [
-                        item['betaalauto'].toString(),
-                        item['TID'].toString(),
-                        item['TIDAWL'].toString(),
-                        item['MerchantID'].toString(),
-                      ],
-                    );
-                    _detailCards[4].setDataList(
-                      [
-                        item['PUKGSM'].toString(),
-                        item['CertCode'].toString(),
-                        item['datuminstall'].toString(),
-                        item['Installatie'].toString(),
-                        item['InstallatieDatum'].toString(),
-                        item['Euro_Install_Num'].toString(),
-                        item['Euro_Opmerkingen'].toString(),
-                        item['pinpadserie'].toString(),
-                        item['Portnumber'].toString(),
-                        item['verkooppuntc'].toString(),
-                      ],
-                    );
-
-                    return Container(
+    return Provider<DetailModel>(
+      create: (_) => DetailModel(defaultExpandCategory),
+// dispose needed ?
+      child: Consumer<OverViewModel>(
+        builder: (context, model, chld) {
+          return model.getclickedDetailID == -1
+              ? Center(child: Text("selecteer aan de linker kant een item"))
+              : FutureBuilder<List<Map<String, Object?>>>(
+                  future: DataProvider.db.getDetails(model.getclickedDetailID),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      print("detailArea - start future");
+                      final item = snapshot.data![0];
+                      Provider.of<DetailModel>(context, listen: false)
+                          .setData(item);
+                      return Container(
                         decoration: BoxDecoration(
-                            color: Theme.of(context).cardColor,
-                            borderRadius: BorderRadius.all(Radius.circular(8))),
-                        // ),
-                        child: Column(children: [
-                          Expanded(
-                              child: ListView(children: [
-                            getDetailTile(0),
-                            getDetailTile(1),
-                            getDetailTile(2),
-                            getDetailTile(3),
-                            getDetailTile(4),
-                          ]))
-                        ]));
-                  }
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                },
-                // ),
-              );
-      },
+                          color: Theme.of(context).cardColor,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(8),
+                          ),
+                        ),
+                        child: Column(
+                          children: [
+                            Expanded(
+                              child: ListView(
+                                children: [
+                                  getDetailTile(0, context),
+                                  getDetailTile(1, context),
+                                  getDetailTile(2, context),
+                                  getDetailTile(3, context),
+                                  getDetailTile(4, context),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+                    }
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
+                );
+        },
+      ),
     );
-    // );
-    // ]));
   }
 
-  Widget getDetailTile(int tileNRParam) {
+//----------------------------------------------------------------------------//
+
+  Widget getDetailTile(int tileNRParam, BuildContext context) {
     return ExpansionTile(
-        title: Container(
-          // width: double.infinity,
-          child: Text(
-            _detailCards[tileNRParam].groupValue,
-            style: TextStyle(
-              fontSize: 20.0,
-              color: textColor,
-              fontWeight: FontWeight.bold,
-            ),
+      title: Text(
+        Provider.of<DetailModel>(context, listen: false)
+            .getGroupValue(tileNRParam),
+        style: TextStyle(
+          fontSize: 20.0,
+          color: textColor,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      initiallyExpanded: Provider.of<DetailModel>(context, listen: false)
+          .getIsExanded(tileNRParam),
+      trailing: (Provider.of<DetailModel>(context, listen: false)
+                  .getIsExanded(tileNRParam) ==
+              true)
+          ? Icon(Icons.arrow_drop_down, size: 32, color: textColor)
+          : Icon(Icons.arrow_drop_up, size: 32, color: textColor),
+      onExpansionChanged: (value) {
+        Provider.of<DetailModel>(context, listen: false)
+            .setIsExanded(tileNRParam, value);
+      },
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 8.0),
+          child: ListTile(
+            title: getDetailItemData(tileNRParam, context),
           ),
         ),
-        initiallyExpanded: _detailCards[tileNRParam].isExpanded,
-        trailing: (_detailCards[tileNRParam].isExpanded == true)
-            ? Icon(Icons.arrow_drop_down, size: 32, color: textColor)
-            : Icon(Icons.arrow_drop_up, size: 32, color: textColor),
-        onExpansionChanged: (value) {
-          // setState(() {
-          _detailCards[tileNRParam].isExpanded = value;
-          // });
-        },
-        children: [
-          Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: ListTile(
-                // title: Align(
-                // child:
-                title: _detailCards[tileNRParam].getDetailItemData(),
-                // alignment: Alignment.topLeft,
-                // )
-              )),
-        ]);
+      ],
+    );
   }
 
-  // void updateDetailsArea(int _selectedIDParam) {
-  //   setState(() {
-  //     _selectedID = _selectedIDParam;
-  //   });
-  // }
-}
-
-class _DetailCard {
-  _DetailCard(
-    this.groupValue,
-    this.descriptionsList,
-    this.isExpanded,
-  );
-
-  String groupValue;
-  String descriptionValue;
-  List<String> descriptionsList;
-  List<String> dataList;
-  bool isExpanded;
-
-  void setDataList(List<String> dataParam) {
-    dataList = dataParam;
-  }
-
-  Column getDetailItemData() {
+//----------------------------------------------------------------------------//
+  Column getDetailItemData(int tileNRParam, BuildContext context) {
+    var dataList = Provider.of<DetailModel>(context, listen: false)
+        .getDataList(tileNRParam)!;
+    var descriptionsList = Provider.of<DetailModel>(context, listen: false)
+        .getDescrList(tileNRParam);
     var listlength = dataList.length;
-    List<_DoubleString> temp = [];
+    List<Row> rowList = [];
     for (int i = 0; i < listlength; i++) {
-      temp.add(_DoubleString(descriptionsList[i], dataList[i]));
+      rowList.add(
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(child: Text(descriptionsList[i]), flex: 12),
+            Expanded(child: Text(dataList[i]), flex: 15),
+          ],
+        ),
+      );
     }
+
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: temp.map<Row>((_DoubleString doubleString) {
-          return Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(child: Text(doubleString.desc), flex: 12),
-              Expanded(child: Text(doubleString.data), flex: 15),
-            ],
-            // children:
-
-            // Text(
-            // detail,
-            // textAlign: TextAlign.left,
-          );
-        }).toList());
+        crossAxisAlignment: CrossAxisAlignment.start, children: rowList);
   }
-}
 
-class _DoubleString {
-  _DoubleString(
-    this.desc,
-    this.data,
-  );
+//----------------------------------------------------------------------------//
 
-  String desc;
-  String data;
 }

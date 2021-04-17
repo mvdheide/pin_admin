@@ -6,6 +6,8 @@ import 'package:pin_admin/Widget/overviewListArea.dart';
 import 'package:pin_admin/models/textFieldModel.dart';
 
 class TabletMainPage extends StatelessWidget {
+//----------------------------------------------------------------------------//
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -24,7 +26,10 @@ class TabletMainPage extends StatelessWidget {
                 FilterTextArea(
                     textfieldNr: TextFieldModel.SHOP_TEXTFIELD,
                     useGPSIcon: false),
-                FilterTextArea(textfieldNr: TextFieldModel.TMS_TEXTFIELD),
+                FilterTextArea(
+                  textfieldNr: TextFieldModel.TMS_TEXTFIELD,
+                  useNumericKeys: true,
+                ),
                 // Divider(),
                 HeaderButtonRow(
                     backGroundColor: Theme.of(context).primaryColor),
@@ -39,11 +44,14 @@ class TabletMainPage extends StatelessWidget {
             alignment: Alignment.topLeft,
             width: 2 * MediaQuery.of(context).size.width / 5,
             child: DetailsArea(
-              textColor: Theme.of(context).textTheme.bodyText2.color,
+              textColor: Theme.of(context).textTheme.bodyText2!.color,
             ),
           ),
         ),
       ],
     );
   }
+
+//----------------------------------------------------------------------------//
+
 }
